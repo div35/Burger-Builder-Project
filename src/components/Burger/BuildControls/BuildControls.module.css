@@ -7,6 +7,7 @@
     box-shadow: 0 2px 1px #ccc;
     margin: auto;
     padding: 10px 0;
+    border-radius: 1rem;
 }
 
 .OrderButton {
@@ -38,6 +39,10 @@
 
 .OrderButton:not(:disabled) {
     animation: enable 0.3s linear;
+}
+
+.Note{
+    margin:1.5rem;
 }
 
 @keyframes enable {
