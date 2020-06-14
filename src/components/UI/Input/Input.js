@@ -10,7 +10,8 @@ const input = (props) => {
                 className={classes.InputElement}
                 {...props.elementConfig}
                 value={props.value} 
-                onChange={props.changed}/>;
+                onChange={props.changed}
+                required={props.required}/>;
             break;
 
         case ('textarea'):
