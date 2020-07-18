@@ -4,6 +4,7 @@ import classes from "./ContactData.module.css";
 import axios from "./../../../../axios-order";
 import Spinner from "./../../../UI/Spinner/Spinner";
 import Input from "./../../../UI/Input/Input";
+import { connect } from "react-redux"
 
 class ContactData extends Component {
   state = {
@@ -105,7 +106,7 @@ class ContactData extends Component {
     }
 
     const order = {
-      ingredients: this.props.ingredients,
+      ingredients: this.props.ings,
       price: this.props.price,
       orderData: formData,
     };
@@ -119,15 +120,15 @@ class ContactData extends Component {
       .catch((err) => this.setState({ loading: false }));
   };
 
-//   checkValidity = (value, rules) => {
-//     let isValid = true;
+  //   checkValidity = (value, rules) => {
+  //     let isValid = true;
 
-//     if (rules.required) {
-//       isValid = value.trim() !== "";
-//     }
+  //     if (rules.required) {
+  //       isValid = value.trim() !== "";
+  //     }
 
-//     return isValid;
-//   };
+  //     return isValid;
+  //   };
 
   changeInputHandler = (inputIdentifier, event) => {
     // console.log(inputIdentifier);
@@ -170,7 +171,7 @@ class ContactData extends Component {
               elementType={formElement.config.elementType}
               elementConfig={formElement.config.elementConfig}
               value={formElement.config.value}
-              required = {formElement.config.validation ? formElement.config.validation.required : false}
+              required={formElement.config.validation ? formElement.config.validation.required : false}
               changed={this.changeInputHandler.bind("this", formElement.id)}
 
             />
@@ -193,4 +194,13 @@ class ContactData extends Component {
   }
 }
 
-export default ContactData;
+const mapStatetoProps = state => {
+  return(
+    {
+      ings: state.ingredients,
+      price: state.totalPrice
+    }
+  )
+}
+
+export default connect(mapStatetoProps)(ContactData);
