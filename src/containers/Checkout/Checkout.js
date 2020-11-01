@@ -5,10 +5,10 @@ import ContactData from "./../../components/Order/CheckoutSummary/ContactData/Co
 import {connect} from "react-redux"
 
 class Checkout extends Component {
-    state = {
-        ingredients: null,
-        totalPrice: 0
-    }
+    // state = {
+    //     ingredients: null,
+    //     totalPrice: 0
+    // }
 
     // componentWillMount = () => {
     //     // console.log(this.props)
@@ -47,7 +47,8 @@ class Checkout extends Component {
 
 const mapStateToProps = state => {
     return{
-        ings: state.ingredients
+        ings: state.ingredients,
+        price: state.totalPrice
     }
 }
 

@@ -3,7 +3,7 @@ import classes from "./Order.module.css";
 
 const order = (props) => {
     let ingredients = [];
-
+    // console.log(props.order)
     for (let ingName in props.order.ingredients) {
         ingredients.push({
             name: ingName,
@@ -18,6 +18,7 @@ const order = (props) => {
     return (
         <div className={classes.Order}>
             <p>Ingredients : {ingredientOutput}</p>
+            <p>Address : {props.order.orderData.address}, {props.order.orderData.state}, {props.order.orderData.country}</p>
             <p>Total Price : <strong>{props.order.price} INR</strong></p>
         </div>
     )

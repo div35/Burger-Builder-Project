@@ -27,13 +27,16 @@ class Orders extends Component {
     }
 
     render() {
-        let order = this.state.orders.map((order) => <Order order={order} key={order.id} />)
+        let orderEmpty = {"textAlign":"center"};
+        let order = <p style={orderEmpty}>SORRY !!! You Don't Have Any Previous Order</p>
+        if (this.state.orders.length > 0)
+            order = this.state.orders.map((order) => <Order order={order} key={order.id} />)
         if (this.state.loading) {
             order = <Spinner />
         }
         return (
             <div>
-                <h2 style={{textAlign:"center" , padding:"20px"}}>Your Orders</h2>
+                <h2 style={{ textAlign: "center", padding: "20px" }}>Your Orders</h2>
                 {order}
             </div>
         );

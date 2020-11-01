@@ -145,7 +145,7 @@ class ContactData extends Component {
     //     orderDetailsElem.value,
     //     orderDetailsElem.validation
     //   );
-    console.log(orderDetailsElem);
+    // console.log(orderDetailsElem);
     orderDetails[inputIdentifier] = orderDetailsElem;
 
     this.setState({ orderForm: orderDetails });
