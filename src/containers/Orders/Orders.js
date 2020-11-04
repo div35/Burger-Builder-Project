@@ -8,7 +8,7 @@ import { connect } from "react-redux"
 
 class Orders extends Component {
     componentDidMount() {
-        this.props.onFetchOrder()
+        this.props.onFetchOrder(this.props.token)
     }
 
     render() {
@@ -16,13 +16,13 @@ class Orders extends Component {
 
         if (!this.props.loading) {
             let orderEmpty = { "textAlign": "center" };
-            order = <p style={orderEmpty}>SORRY !!! You Don't Have Any Previous Order</p>
+            order = this.props.token ? <p style={orderEmpty}>SORRY !!! You Don't Have Any Previous Order</p> : null
             if (this.props.orders.length > 0)
                 order = this.props.orders.map((order) => <Order order={order} key={order.id} />)
         }
         return (
             <div>
-                <h2 style={{ textAlign: "center", padding: "20px" }}>Your Orders</h2>
+                {this.props.token ? <h2 style={{ textAlign: "center", padding: "20px" }}>Your Orders</h2> : <h2 style={{ textAlign: "center", padding: "20px" }}>Please Login First !!!</h2>}
                 {order}
             </div>
         );
@@ -32,14 +32,15 @@ class Orders extends Component {
 const mapStateToProps = state => {
     return {
         orders: state.order.orders,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return (
         {
-            onFetchOrder: () => dispatch(actions.fetchOrders())
+            onFetchOrder: (token) => dispatch(actions.fetchOrders(token))
         }
     )
 }
