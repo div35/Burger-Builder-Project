@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Input from "./../../components/UI/Input/Input"
+import { Redirect } from "react-router-dom"
 import Button from "./../../components/UI/Button/Button"
 import classes from "./Auth.module.css"
 import * as action from "./../../store/action/index"
@@ -36,9 +37,30 @@ class Auth extends Component {
                 },
                 valid: false,
                 touched: false
+            },
+            confirm_password: {
+                elementType: "input",
+                elementConfig: {
+                    type: "password",
+                    placeholder: "Confirm Your Password",
+                },
+                value: "",
+                validation: {
+                    required: true,
+                    minLength: 6
+                },
+                valid: false,
+                touched: false
             }
+
         },
         isSignup: true
+    }
+
+    componentDidMount() {
+        if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
+            this.props.onSetAuthRedirectPath();
+        }
     }
 
     checkValidity(value, rules) {
@@ -87,7 +109,11 @@ class Auth extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup)
+        if (this.state.isSignup == false || (this.state.isSignup == true && (this.state.controls.password.value === this.state.controls.confirm_password.value)))
+            this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup)
+
+        else
+            alert("Password Doesn't Match");
     }
 
     switchAuthModeHandler = () => {
@@ -99,10 +125,13 @@ class Auth extends Component {
     render() {
         const formElementsArray = [];
         for (let key in this.state.controls) {
-            formElementsArray.push({
-                id: key,
-                config: this.state.controls[key],
-            });
+            if (this.state.isSignup == true || (this.state.isSignup == false && key !== "confirm_password")) {
+                formElementsArray.push({
+                    id: key,
+                    config: this.state.controls[key],
+                });
+            }
+
         }
 
         let form = formElementsArray.map(formElement => (
@@ -129,10 +158,15 @@ class Auth extends Component {
             errorMsg = (<p style={{ color: "maroon" }} >ERROR : {this.props.error.message} !!!</p>)
         }
 
+        let authRedirect = null;
+        if (this.props.isAuth) {
+            authRedirect = <Redirect to={this.props.authRedirectPath} />;
+        }
         return (
             <div>
                 <br />
                 <div className={classes.Auth}>
+                    {authRedirect}
                     <h2 style={{ color: "maroon" }}>{this.state.isSignup ? "SIGNUP" : "LOGIN"}</h2>
                     {errorMsg}
                     <form onSubmit={this.submitHandler}>
@@ -149,13 +183,17 @@ class Auth extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        error: state.auth.error
+        error: state.auth.error,
+        isAuth: state.auth.token !== null,
+        buildingBurger: state.burgerBuilder.building,
+        authRedirectPath: state.auth.authRedirectPath
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onAuth: (email, password, isSignup) => dispatch(action.auth(email, password, isSignup))
+        onAuth: (email, password, isSignup) => dispatch(action.auth(email, password, isSignup)),
+        onSetAuthRedirectPath: () => dispatch(action.setAuthRedirectPath('/'))
     }
 }
 
