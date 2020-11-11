@@ -109,7 +109,7 @@ class Auth extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        if (this.state.isSignup == false || (this.state.isSignup == true && (this.state.controls.password.value === this.state.controls.confirm_password.value)))
+        if (this.state.isSignup === false || (this.state.isSignup === true && (this.state.controls.password.value === this.state.controls.confirm_password.value)))
             this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup)
 
         else
@@ -125,7 +125,7 @@ class Auth extends Component {
     render() {
         const formElementsArray = [];
         for (let key in this.state.controls) {
-            if (this.state.isSignup == true || (this.state.isSignup == false && key !== "confirm_password")) {
+            if (this.state.isSignup === true || (this.state.isSignup === false && key !== "confirm_password")) {
                 formElementsArray.push({
                     id: key,
                     config: this.state.controls[key],
